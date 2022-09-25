@@ -345,39 +345,29 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_id = String.valueOf(index);
-                                String str_operation = "True";
-                                if(!operation_state){
-                                    str_operation = "False";
-                                }
-                                URL url = new URL("http://47.96.100.217:8080/set_basic_info_new?id="+str_id+"&operation="+str_operation);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_id = String.valueOf(index);
+                        String str_operation = "True";
+                        if(!operation_state){
+                            str_operation = "False";
                         }
-                    }).start();
-                    while(wait[0]){
+                        URL url = new URL("http://47.96.100.217:8080/set_basic_info_new?id="+str_id+"&operation="+str_operation);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
+                        }
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         // load info page
@@ -395,6 +385,7 @@ public class FloatViewService extends AccessibilityService {
                         float_btn_start.setVisibility(View.VISIBLE);
                         float_tv_result.setVisibility(View.VISIBLE);
                         float_tv_result.setText("识别到的内容");
+                        title_1.setText("讯飞");
 
                         Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
                     } else {
@@ -429,36 +420,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_id = String.valueOf(index);
-                                String str_first_des = float_tv_result.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_first_des_new?id="+str_id+"&first_des="+str_first_des);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_id = String.valueOf(index);
+                        String str_first_des = float_tv_result.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_first_des_new?id="+str_id+"&first_des="+str_first_des);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         title_1.setText("ST");
@@ -476,36 +457,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_second_des = float_tv_result.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_second_des_new?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_second_des = float_tv_result.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_second_des_new?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         // recognize page
@@ -541,36 +512,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_id = String.valueOf(index);
-                                String str_job = job_input.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/save_test_info_new?id="+str_id+"&job="+str_job);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_id = String.valueOf(index);
+                        String str_job = job_input.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/save_test_info_new?id="+str_id+"&job="+str_job);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         //save page
