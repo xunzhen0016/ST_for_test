@@ -105,31 +105,10 @@ public class FloatViewService extends AccessibilityService {
     private TextView title_1;
     private Button float_btn_start;
     private TextView float_tv_result;
-    private TextView not_right_info;
     private Button next_step;
     private Button search_answer;
 
-    // recognize answer page
-    private TextView title_2;
-    private TextView des3;
-    private TextView des4;
-    private TextView xun_fei_1;
-    private Button xun_fei_choose_1;
-    private TextView xun_fei_2;
-    private Button xun_fei_choose_2;
-    private TextView xun_fei_plus_1;
-    private Button xun_fei_plus_choose_1;
-    private TextView xun_fei_plus_2;
-    private Button xun_fei_plus_choose_2;
-    private TextView ST_1;
-    private Button ST_choose_1;
-    private TextView ST_2;
-    private Button ST_choose_2;
-    private Button not_correct;
-
     //save page
-    private TextView user;
-    private EditText user_input;
     private TextView job;
     private EditText job_input;
     private Button save_info;
@@ -142,8 +121,6 @@ public class FloatViewService extends AccessibilityService {
     private int num, nNum;
     private int index;
     private boolean operation_state;
-    private boolean send_1_first;
-    private boolean send_2_first;
 
     @Override
     protected void onServiceConnected() {
@@ -182,8 +159,6 @@ public class FloatViewService extends AccessibilityService {
         num = 0;
         nNum = 0;
         index = 0;
-        send_1_first = true;
-        send_2_first = true;
         presentApp = "";
         presentComponent = "";
         showFloatingWindow();
@@ -381,7 +356,7 @@ public class FloatViewService extends AccessibilityService {
                                 if(!operation_state){
                                     str_operation = "False";
                                 }
-                                URL url = new URL("http://47.96.100.217:8080/set_basic_info?id="+str_id+"&operation="+str_operation);
+                                URL url = new URL("http://47.96.100.217:8080/set_basic_info_new?id="+str_id+"&operation="+str_operation);
                                 connection = (HttpURLConnection) url.openConnection();
                                 connection.setConnectTimeout(3000);
                                 connection.setReadTimeout(3000);
@@ -409,10 +384,6 @@ public class FloatViewService extends AccessibilityService {
                         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                         des1.setVisibility(View.GONE);
                         des2.setVisibility(View.GONE);
-                        user.setVisibility(View.GONE);
-                        user_input.setVisibility(View.GONE);
-                        job.setVisibility(View.GONE);
-                        job_input.setVisibility(View.GONE);
                         setting_operation.setVisibility(View.GONE);
                         radio_set_true.setVisibility(View.GONE);
                         radio_set_false.setVisibility(View.GONE);
@@ -424,9 +395,6 @@ public class FloatViewService extends AccessibilityService {
                         float_btn_start.setVisibility(View.VISIBLE);
                         float_tv_result.setVisibility(View.VISIBLE);
                         float_tv_result.setText("识别到的内容");
-
-                        send_1_first = true;
-                        send_2_first = true;
 
                         Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
                     } else {
@@ -450,16 +418,11 @@ public class FloatViewService extends AccessibilityService {
                     mIatResults.clear();//清除数据
                     setParam(); // 设置参数
                     mIat.startListening(mRecoListener);
-                    send_1_first = true;
-                    send_2_first = true;
-                    not_right_info.setVisibility(View.GONE);
                     float_tv_result.setText("识别到的内容");
                 }
             });
             float_tv_result = displayView.findViewById(R.id.float_tv_result);
             float_tv_result.setVisibility(View.GONE);
-            not_right_info = displayView.findViewById(R.id.not_right_info);
-            not_right_info.setVisibility(View.GONE);
             next_step = displayView.findViewById(R.id.next_step);
             next_step.setVisibility(View.GONE);
             next_step.setOnClickListener(new View.OnClickListener() {
@@ -474,7 +437,7 @@ public class FloatViewService extends AccessibilityService {
                             try {
                                 String str_id = String.valueOf(index);
                                 String str_first_des = float_tv_result.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_first_des?id="+str_id+"&first_des="+str_first_des);
+                                URL url = new URL("http://47.96.100.217:8080/set_first_des_new?id="+str_id+"&first_des="+str_first_des);
                                 connection = (HttpURLConnection) url.openConnection();
                                 connection.setConnectTimeout(3000);
                                 connection.setReadTimeout(3000);
@@ -501,21 +464,6 @@ public class FloatViewService extends AccessibilityService {
                         title_1.setText("ST");
                         float_tv_result.setText("识别到的内容");
                         next_step.setVisibility(View.GONE);
-                        not_right_info.setVisibility(View.GONE);
-                        send_1_first = true;
-                        send_2_first = true;
-                        Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                    } else if(result[0].equals("Again")){
-                        if (send_1_first){
-                            not_right_info.setVisibility(View.VISIBLE);
-                        } else {
-                            title_1.setText("ST");
-                            float_tv_result.setText("识别到的内容");
-                            next_step.setVisibility(View.GONE);
-                            not_right_info.setVisibility(View.GONE);
-                            send_1_first = true;
-                            send_2_first = true;
-                        }
                         Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
@@ -527,8 +475,8 @@ public class FloatViewService extends AccessibilityService {
             search_answer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String[] result = {"",""};
-                    boolean[] wait = {true,true};
+                    String[] result = {""};
+                    boolean[] wait = {true};
                     String str_id = String.valueOf(index);
                     new Thread(new Runnable() {
                         @Override
@@ -536,7 +484,7 @@ public class FloatViewService extends AccessibilityService {
                             HttpURLConnection connection = null;
                             try {
                                 String str_second_des = float_tv_result.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_second_des?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
+                                URL url = new URL("http://47.96.100.217:8080/set_second_des_new?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
                                 connection = (HttpURLConnection) url.openConnection();
                                 connection.setConnectTimeout(3000);
                                 connection.setReadTimeout(3000);
@@ -564,855 +512,24 @@ public class FloatViewService extends AccessibilityService {
                         title_1.setVisibility(View.GONE);
                         float_btn_start.setVisibility(View.GONE);
                         float_tv_result.setVisibility(View.GONE);
-                        not_right_info.setVisibility(View.GONE);
                         next_step.setVisibility(View.GONE);
                         search_answer.setVisibility(View.GONE);
 
-
-                        // recognize answer page
-                        title_2.setVisibility(View.VISIBLE);
-                        des3.setVisibility(View.VISIBLE);
-                        des4.setVisibility(View.VISIBLE);
-                        xun_fei_1.setVisibility(View.VISIBLE);
-                        xun_fei_choose_1.setVisibility(View.VISIBLE);
-                        xun_fei_2.setVisibility(View.VISIBLE);
-                        xun_fei_choose_2.setVisibility(View.VISIBLE);
-                        not_correct.setVisibility(View.VISIBLE);
-                        title_2.setText("讯飞");
-                        send_1_first = true;
-                        send_2_first = true;
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[1]){
-                        }
-                        String[] separated = result[1].split("&");
-                        if(separated[0].equals("Done")){
-                            xun_fei_1.setText(separated[1]);
-                            xun_fei_2.setText(separated[2]);
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                        Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                    } else if (result[0].equals("Again")) {
-                        if (send_2_first){
-                            not_right_info.setVisibility(View.VISIBLE);
-                        } else {
-                            // recognize page
-                            title_1.setVisibility(View.GONE);
-                            float_btn_start.setVisibility(View.GONE);
-                            float_tv_result.setVisibility(View.GONE);
-                            not_right_info.setVisibility(View.GONE);
-                            next_step.setVisibility(View.GONE);
-                            search_answer.setVisibility(View.GONE);
-
-
-                            // recognize answer page
-                            title_2.setVisibility(View.VISIBLE);
-                            des3.setVisibility(View.VISIBLE);
-                            des4.setVisibility(View.VISIBLE);
-                            xun_fei_1.setVisibility(View.VISIBLE);
-                            xun_fei_choose_1.setVisibility(View.VISIBLE);
-                            xun_fei_2.setVisibility(View.VISIBLE);
-                            xun_fei_choose_2.setVisibility(View.VISIBLE);
-                            not_correct.setVisibility(View.VISIBLE);
-                            title_2.setText("讯飞");
-                            send_1_first = true;
-                            send_2_first = true;
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    HttpURLConnection connection = null;
-                                    try {
-                                        URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
-                                        connection = (HttpURLConnection) url.openConnection();
-                                        connection.setConnectTimeout(3000);
-                                        connection.setReadTimeout(3000);
-                                        //设置请求方式 GET / POST 一定要大小
-                                        connection.setRequestMethod("GET");
-                                        connection.setDoInput(true);
-                                        connection.setDoOutput(false);
-                                        connection.connect();
-                                        int responseCode = connection.getResponseCode();
-                                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                                            throw new IOException("HTTP error code" + responseCode);
-                                        }
-                                        result[1] = getStringByStream(connection.getInputStream());
-                                        wait[1] = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        wait[1] = false;
-                                    }
-                                }
-                            }).start();
-                            while(wait[1]){
-                            }
-                            String[] separated = result[1].split("&");
-                            if(separated[0].equals("Done")){
-                                xun_fei_1.setText(separated[1]);
-                                xun_fei_2.setText(separated[2]);
-                                Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                            }
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        }
-                    }else {
-                        Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            title_2 = displayView.findViewById(R.id.title_2);
-            title_2.setVisibility(View.GONE);
-            des3 = displayView.findViewById(R.id.des3);
-            des3.setVisibility(View.GONE);
-            des4 = displayView.findViewById(R.id.des4);
-            des4.setVisibility(View.GONE);
-            xun_fei_1 = displayView.findViewById(R.id.xun_fei_1);
-            xun_fei_1.setVisibility(View.GONE);
-            xun_fei_choose_1 = displayView.findViewById(R.id.xun_fei_choose_1);
-            xun_fei_choose_1.setVisibility(View.GONE);
-            xun_fei_choose_1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String[] result = {"",""};
-                    boolean[] wait = {true,true};
-                    String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_1.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
-                        }
-                    }).start();
-                    while(wait[0]){
-                    }
-                    if(result[0].equals("Done")){
-                        title_2.setText("讯飞+");
-                        xun_fei_1.setVisibility(View.GONE);
-                        xun_fei_choose_1.setVisibility(View.GONE);
-                        xun_fei_2.setVisibility(View.GONE);
-                        xun_fei_choose_2.setVisibility(View.GONE);
-                        xun_fei_plus_1.setVisibility(View.VISIBLE);
-                        xun_fei_plus_choose_1.setVisibility(View.VISIBLE);
-                        xun_fei_plus_2.setVisibility(View.VISIBLE);
-                        xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[1]){
-                        }
-                        String[] separated = result[1].split("&");
-                        if(separated[0].equals("Done")){
-                            xun_fei_plus_1.setText(separated[1]);
-                            xun_fei_plus_2.setText(separated[2]);
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                        Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            xun_fei_2 = displayView.findViewById(R.id.xun_fei_2);
-            xun_fei_2.setVisibility(View.GONE);
-            xun_fei_choose_2 = displayView.findViewById(R.id.xun_fei_choose_2);
-            xun_fei_choose_2.setVisibility(View.GONE);
-            xun_fei_choose_2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String[] result = {"",""};
-                    boolean[] wait = {true,true};
-                    String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_2.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
-                        }
-                    }).start();
-                    while(wait[0]){
-                    }
-                    if(result[0].equals("Done")){
-                        title_2.setText("讯飞+");
-                        xun_fei_1.setVisibility(View.GONE);
-                        xun_fei_choose_1.setVisibility(View.GONE);
-                        xun_fei_2.setVisibility(View.GONE);
-                        xun_fei_choose_2.setVisibility(View.GONE);
-                        xun_fei_plus_1.setVisibility(View.VISIBLE);
-                        xun_fei_plus_choose_1.setVisibility(View.VISIBLE);
-                        xun_fei_plus_2.setVisibility(View.VISIBLE);
-                        xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[1]){
-                        }
-                        String[] separated = result[1].split("&");
-                        if(separated[0].equals("Done")){
-                            xun_fei_plus_1.setText(separated[1]);
-                            xun_fei_plus_2.setText(separated[2]);
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                        Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            xun_fei_plus_1 = displayView.findViewById(R.id.xun_fei_plus_1);
-            xun_fei_plus_1.setVisibility(View.GONE);
-            xun_fei_plus_choose_1 = displayView.findViewById(R.id.xun_fei_plus_choose_1);
-            xun_fei_plus_choose_1.setVisibility(View.GONE);
-            xun_fei_plus_choose_1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String[] result = {"",""};
-                    boolean[] wait = {true,true};
-                    String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_plus_1.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
-                        }
-                    }).start();
-                    while(wait[0]){
-                    }
-                    if(result[0].equals("Done")){
-                        title_2.setText("ST");
-                        xun_fei_plus_1.setVisibility(View.GONE);
-                        xun_fei_plus_choose_1.setVisibility(View.GONE);
-                        xun_fei_plus_2.setVisibility(View.GONE);
-                        xun_fei_plus_choose_2.setVisibility(View.GONE);
-                        ST_1.setVisibility(View.VISIBLE);
-                        ST_choose_1.setVisibility(View.VISIBLE);
-                        ST_2.setVisibility(View.VISIBLE);
-                        ST_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[1]){
-                        }
-                        String[] separated = result[1].split("&");
-                        if(separated[0].equals("Done")){
-                            ST_1.setText(separated[1]);
-                            ST_2.setText(separated[2]);
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                        Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            xun_fei_plus_2 = displayView.findViewById(R.id.xun_fei_plus_2);
-            xun_fei_plus_2.setVisibility(View.GONE);
-            xun_fei_plus_choose_2 = displayView.findViewById(R.id.xun_fei_plus_choose_2);
-            xun_fei_plus_choose_2.setVisibility(View.GONE);
-            xun_fei_plus_choose_2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String[] result = {"",""};
-                    boolean[] wait = {true,true};
-                    String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_plus_2.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
-                        }
-                    }).start();
-                    while(wait[0]){
-                    }
-                    if(result[0].equals("Done")){
-                        title_2.setText("ST");
-                        xun_fei_plus_1.setVisibility(View.GONE);
-                        xun_fei_plus_choose_1.setVisibility(View.GONE);
-                        xun_fei_plus_2.setVisibility(View.GONE);
-                        xun_fei_plus_choose_2.setVisibility(View.GONE);
-                        ST_1.setVisibility(View.VISIBLE);
-                        ST_choose_1.setVisibility(View.VISIBLE);
-                        ST_2.setVisibility(View.VISIBLE);
-                        ST_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[1]){
-                        }
-                        String[] separated = result[1].split("&");
-                        if(separated[0].equals("Done")){
-                            ST_1.setText(separated[1]);
-                            ST_2.setText(separated[2]);
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                        Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            ST_1 = displayView.findViewById(R.id.ST_1);
-            ST_1.setVisibility(View.GONE);
-            ST_choose_1 = displayView.findViewById(R.id.ST_choose_1);
-            ST_choose_1.setVisibility(View.GONE);
-            ST_choose_1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String[] result = {""};
-                    boolean[] wait = {true};
-                    String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = ST_1.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
-                        }
-                    }).start();
-                    while(wait[0]){
-                    }
-                    if(result[0].equals("Done")){
-                        // recognize answer page
-                        title_2.setVisibility(View.GONE);
-                        des3.setVisibility(View.GONE);
-                        des4.setVisibility(View.GONE);
-                        ST_1.setVisibility(View.GONE);
-                        ST_choose_1.setVisibility(View.GONE);
-                        ST_2.setVisibility(View.GONE);
-                        ST_choose_2.setVisibility(View.GONE);
-                        not_correct.setVisibility(View.GONE);
-
                         //save page
-                        user.setVisibility(View.VISIBLE);
-                        user_input.setVisibility(View.VISIBLE);
                         job.setVisibility(View.VISIBLE);
                         job_input.setVisibility(View.VISIBLE);
+                        job_input.setText("");
                         save_info.setVisibility(View.VISIBLE);
-                        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+                        close_after.setVisibility(View.GONE);
+                        next_group.setVisibility(View.GONE);
+                        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL ;
+
                         Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-            ST_2 = displayView.findViewById(R.id.ST_2);
-            ST_2.setVisibility(View.GONE);
-            ST_choose_2 = displayView.findViewById(R.id.ST_choose_2);
-            ST_choose_2.setVisibility(View.GONE);
-            ST_choose_2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String[] result = {""};
-                    boolean[] wait = {true};
-                    String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = ST_2.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
-                        }
-                    }).start();
-                    while(wait[0]){
-                    }
-                    if(result[0].equals("Done")){
-                        // recognize answer page
-                        title_2.setVisibility(View.GONE);
-                        des3.setVisibility(View.GONE);
-                        des4.setVisibility(View.GONE);
-                        ST_1.setVisibility(View.GONE);
-                        ST_choose_1.setVisibility(View.GONE);
-                        ST_2.setVisibility(View.GONE);
-                        ST_choose_2.setVisibility(View.GONE);
-                        not_correct.setVisibility(View.GONE);
-
-                        //save page
-                        user.setVisibility(View.VISIBLE);
-                        user_input.setVisibility(View.VISIBLE);
-                        job.setVisibility(View.VISIBLE);
-                        job_input.setVisibility(View.VISIBLE);
-                        save_info.setVisibility(View.VISIBLE);
-                        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-                        Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            not_correct = displayView.findViewById(R.id.not_correct);
-            not_correct.setVisibility(View.GONE);
-            not_correct.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String[] result = {"",""};
-                    boolean[] wait = {true,true};
-                    String str_id = String.valueOf(index);
-                    if (title_2.getText().toString().equals("讯飞")){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=False&answer=");
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[0] = getStringByStream(connection.getInputStream());
-                                    wait[0] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[0] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[0]){
-                        }
-                        if(result[0].equals("Done")){
-                            title_2.setText("讯飞+");
-                            xun_fei_1.setVisibility(View.GONE);
-                            xun_fei_choose_1.setVisibility(View.GONE);
-                            xun_fei_2.setVisibility(View.GONE);
-                            xun_fei_choose_2.setVisibility(View.GONE);
-                            xun_fei_plus_1.setVisibility(View.VISIBLE);
-                            xun_fei_plus_choose_1.setVisibility(View.VISIBLE);
-                            xun_fei_plus_2.setVisibility(View.VISIBLE);
-                            xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
-
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    HttpURLConnection connection = null;
-                                    try {
-                                        URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
-                                        connection = (HttpURLConnection) url.openConnection();
-                                        connection.setConnectTimeout(3000);
-                                        connection.setReadTimeout(3000);
-                                        //设置请求方式 GET / POST 一定要大小
-                                        connection.setRequestMethod("GET");
-                                        connection.setDoInput(true);
-                                        connection.setDoOutput(false);
-                                        connection.connect();
-                                        int responseCode = connection.getResponseCode();
-                                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                                            throw new IOException("HTTP error code" + responseCode);
-                                        }
-                                        result[1] = getStringByStream(connection.getInputStream());
-                                        wait[1] = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        wait[1] = false;
-                                    }
-                                }
-                            }).start();
-                            while(wait[1]){
-                            }
-                            String[] separated = result[1].split("&");
-                            if(separated[0].equals("Done")){
-                                xun_fei_plus_1.setText(separated[1]);
-                                xun_fei_plus_2.setText(separated[2]);
-                                Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                            }
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (title_2.getText().toString().equals("讯飞+")){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=False&answer=");
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[0] = getStringByStream(connection.getInputStream());
-                                    wait[0] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[0] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[0]){
-                        }
-                        if(result[0].equals("Done")){
-                            title_2.setText("ST");
-                            xun_fei_plus_1.setVisibility(View.GONE);
-                            xun_fei_plus_choose_1.setVisibility(View.GONE);
-                            xun_fei_plus_2.setVisibility(View.GONE);
-                            xun_fei_plus_choose_2.setVisibility(View.GONE);
-                            ST_1.setVisibility(View.VISIBLE);
-                            ST_choose_1.setVisibility(View.VISIBLE);
-                            ST_2.setVisibility(View.VISIBLE);
-                            ST_choose_2.setVisibility(View.VISIBLE);
-
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    HttpURLConnection connection = null;
-                                    try {
-                                        URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
-                                        connection = (HttpURLConnection) url.openConnection();
-                                        connection.setConnectTimeout(3000);
-                                        connection.setReadTimeout(3000);
-                                        //设置请求方式 GET / POST 一定要大小
-                                        connection.setRequestMethod("GET");
-                                        connection.setDoInput(true);
-                                        connection.setDoOutput(false);
-                                        connection.connect();
-                                        int responseCode = connection.getResponseCode();
-                                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                                            throw new IOException("HTTP error code" + responseCode);
-                                        }
-                                        result[1] = getStringByStream(connection.getInputStream());
-                                        wait[1] = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        wait[1] = false;
-                                    }
-                                }
-                            }).start();
-                            while(wait[1]){
-                            }
-                            String[] separated = result[1].split("&");
-                            if(separated[0].equals("Done")){
-                                ST_1.setText(separated[1]);
-                                ST_2.setText(separated[2]);
-                                Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                            }
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (title_2.getText().toString().equals("ST")){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer=");
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[0] = getStringByStream(connection.getInputStream());
-                                    wait[0] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[0] = false;
-                                }
-                            }
-                        }).start();
-                        while(wait[0]){
-                        }
-                        if(result[0].equals("Done")){
-                            // recognize answer page
-                            title_2.setVisibility(View.GONE);
-                            des3.setVisibility(View.GONE);
-                            des4.setVisibility(View.GONE);
-                            ST_1.setVisibility(View.GONE);
-                            ST_choose_1.setVisibility(View.GONE);
-                            ST_2.setVisibility(View.GONE);
-                            ST_choose_2.setVisibility(View.GONE);
-                            not_correct.setVisibility(View.GONE);
-
-                            //save page
-                            user.setVisibility(View.VISIBLE);
-                            user_input.setVisibility(View.VISIBLE);
-                            job.setVisibility(View.VISIBLE);
-                            job_input.setVisibility(View.VISIBLE);
-                            save_info.setVisibility(View.VISIBLE);
-                            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-                            Toast.makeText(getApplicationContext(), "信息存储成功", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            });
-            user = displayView.findViewById(R.id.user);
-            user.setVisibility(View.GONE);
-            user_input = displayView.findViewById(R.id.user_input);
-            user_input.setVisibility(View.GONE);
-            user_input.setEnabled(true);
             job = displayView.findViewById(R.id.job);
             job.setVisibility(View.GONE);
             job_input = displayView.findViewById(R.id.job_input);
@@ -1431,9 +548,8 @@ public class FloatViewService extends AccessibilityService {
                             HttpURLConnection connection = null;
                             try {
                                 String str_id = String.valueOf(index);
-                                String str_user = user_input.getText().toString();
                                 String str_job = job_input.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/save_test_info?id="+str_id+"&user="+str_user+"&job="+str_job);
+                                URL url = new URL("http://47.96.100.217:8080/save_test_info_new?id="+str_id+"&job="+str_job);
                                 connection = (HttpURLConnection) url.openConnection();
                                 connection.setConnectTimeout(3000);
                                 connection.setReadTimeout(3000);
@@ -1458,8 +574,6 @@ public class FloatViewService extends AccessibilityService {
                     }
                     if(result[0].equals("Done")){
                         //save page
-                        user.setVisibility(View.GONE);
-                        user_input.setVisibility(View.GONE);
                         job.setVisibility(View.GONE);
                         job_input.setVisibility(View.GONE);
                         save_info.setVisibility(View.GONE);
@@ -1527,39 +641,10 @@ public class FloatViewService extends AccessibilityService {
         float_btn_start.setVisibility(View.GONE);
         float_tv_result.setVisibility(View.GONE);
         float_tv_result.setText("识别到的内容");
-        not_right_info.setVisibility(View.GONE);
-        not_right_info.setVisibility(View.GONE);
         next_step.setVisibility(View.GONE);
         search_answer.setVisibility(View.GONE);
 
-        // recognize answer page
-        title_2.setVisibility(View.GONE);
-        des3.setVisibility(View.GONE);
-        des4.setVisibility(View.GONE);
-        xun_fei_1.setText("");
-        xun_fei_1.setVisibility(View.GONE);
-        xun_fei_choose_1.setVisibility(View.GONE);
-        xun_fei_2.setText("");
-        xun_fei_2.setVisibility(View.GONE);
-        xun_fei_choose_2.setVisibility(View.GONE);
-        xun_fei_plus_1.setText("");
-        xun_fei_plus_1.setVisibility(View.GONE);
-        xun_fei_plus_choose_1.setVisibility(View.GONE);
-        xun_fei_plus_2.setText("");
-        xun_fei_plus_2.setVisibility(View.GONE);
-        xun_fei_plus_choose_2.setVisibility(View.GONE);
-        ST_1.setText("");
-        ST_1.setVisibility(View.GONE);
-        ST_choose_1.setVisibility(View.GONE);
-        ST_2.setText("");
-        ST_2.setVisibility(View.GONE);
-        ST_choose_2.setVisibility(View.GONE);
-        not_correct.setVisibility(View.GONE);
-
         //save page
-        user.setVisibility(View.GONE);
-        user_input.setVisibility(View.GONE);
-        user_input.setText("");
         job.setVisibility(View.GONE);
         job_input.setVisibility(View.GONE);
         job_input.setText("");
