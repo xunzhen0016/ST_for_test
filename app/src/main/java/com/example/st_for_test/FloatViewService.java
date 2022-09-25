@@ -370,39 +370,29 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_id = String.valueOf(index);
-                                String str_operation = "True";
-                                if(!operation_state){
-                                    str_operation = "False";
-                                }
-                                URL url = new URL("http://47.96.100.217:8080/set_basic_info?id="+str_id+"&operation="+str_operation);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_id = String.valueOf(index);
+                        String str_operation = "True";
+                        if(!operation_state){
+                            str_operation = "False";
                         }
-                    }).start();
-                    while(wait[0]){
+                        URL url = new URL("http://47.96.100.217:8080/set_basic_info?id="+str_id+"&operation="+str_operation);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
+                        }
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         // load info page
@@ -424,6 +414,7 @@ public class FloatViewService extends AccessibilityService {
                         float_btn_start.setVisibility(View.VISIBLE);
                         float_tv_result.setVisibility(View.VISIBLE);
                         float_tv_result.setText("识别到的内容");
+                        title_1.setText("讯飞");
 
                         send_1_first = true;
                         send_2_first = true;
@@ -466,36 +457,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_id = String.valueOf(index);
-                                String str_first_des = float_tv_result.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_first_des?id="+str_id+"&first_des="+str_first_des);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_id = String.valueOf(index);
+                        String str_first_des = float_tv_result.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_first_des?id="+str_id+"&first_des="+str_first_des);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         title_1.setText("ST");
@@ -528,36 +509,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {"",""};
-                    boolean[] wait = {true,true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_second_des = float_tv_result.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_second_des?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_second_des = float_tv_result.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_second_des?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         // recognize page
@@ -581,33 +552,23 @@ public class FloatViewService extends AccessibilityService {
                         title_2.setText("讯飞");
                         send_1_first = true;
                         send_2_first = true;
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[1]){
+                            result[1] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         String[] separated = result[1].split("&");
                         if(separated[0].equals("Done")){
@@ -643,33 +604,23 @@ public class FloatViewService extends AccessibilityService {
                             title_2.setText("讯飞");
                             send_1_first = true;
                             send_2_first = true;
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    HttpURLConnection connection = null;
-                                    try {
-                                        URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
-                                        connection = (HttpURLConnection) url.openConnection();
-                                        connection.setConnectTimeout(3000);
-                                        connection.setReadTimeout(3000);
-                                        //设置请求方式 GET / POST 一定要大小
-                                        connection.setRequestMethod("GET");
-                                        connection.setDoInput(true);
-                                        connection.setDoOutput(false);
-                                        connection.connect();
-                                        int responseCode = connection.getResponseCode();
-                                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                                            throw new IOException("HTTP error code" + responseCode);
-                                        }
-                                        result[1] = getStringByStream(connection.getInputStream());
-                                        wait[1] = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        wait[1] = false;
-                                    }
+                            try {
+                                URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
+                                connection = (HttpURLConnection) url.openConnection();
+                                connection.setConnectTimeout(3000);
+                                connection.setReadTimeout(3000);
+                                //设置请求方式 GET / POST 一定要大小
+                                connection.setRequestMethod("GET");
+                                connection.setDoInput(true);
+                                connection.setDoOutput(false);
+                                connection.connect();
+                                int responseCode = connection.getResponseCode();
+                                if (responseCode != HttpURLConnection.HTTP_OK) {
+                                    throw new IOException("HTTP error code" + responseCode);
                                 }
-                            }).start();
-                            while(wait[1]){
+                                result[1] = getStringByStream(connection.getInputStream());
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                             String[] separated = result[1].split("&");
                             if(separated[0].equals("Done")){
@@ -700,36 +651,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {"",""};
-                    boolean[] wait = {true,true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_1.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_answer = xun_fei_1.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         title_2.setText("讯飞+");
@@ -741,34 +682,23 @@ public class FloatViewService extends AccessibilityService {
                         xun_fei_plus_choose_1.setVisibility(View.VISIBLE);
                         xun_fei_plus_2.setVisibility(View.VISIBLE);
                         xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[1]){
+                            result[1] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         String[] separated = result[1].split("&");
                         if(separated[0].equals("Done")){
@@ -792,36 +722,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {"",""};
-                    boolean[] wait = {true,true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_2.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_answer = xun_fei_2.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         title_2.setText("讯飞+");
@@ -833,34 +753,23 @@ public class FloatViewService extends AccessibilityService {
                         xun_fei_plus_choose_1.setVisibility(View.VISIBLE);
                         xun_fei_plus_2.setVisibility(View.VISIBLE);
                         xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[1]){
+                            result[1] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         String[] separated = result[1].split("&");
                         if(separated[0].equals("Done")){
@@ -884,36 +793,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {"",""};
-                    boolean[] wait = {true,true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_plus_1.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_answer = xun_fei_plus_1.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         title_2.setText("ST");
@@ -925,34 +824,23 @@ public class FloatViewService extends AccessibilityService {
                         ST_choose_1.setVisibility(View.VISIBLE);
                         ST_2.setVisibility(View.VISIBLE);
                         ST_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[1]){
+                            result[1] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         String[] separated = result[1].split("&");
                         if(separated[0].equals("Done")){
@@ -976,36 +864,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {"",""};
-                    boolean[] wait = {true,true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = xun_fei_plus_2.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_answer = xun_fei_plus_2.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         title_2.setText("ST");
@@ -1017,34 +895,23 @@ public class FloatViewService extends AccessibilityService {
                         ST_choose_1.setVisibility(View.VISIBLE);
                         ST_2.setVisibility(View.VISIBLE);
                         ST_choose_2.setVisibility(View.VISIBLE);
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[1] = getStringByStream(connection.getInputStream());
-                                    wait[1] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[1] = false;
-                                }
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[1]){
+                            result[1] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         String[] separated = result[1].split("&");
                         if(separated[0].equals("Done")){
@@ -1068,36 +935,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = ST_1.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_answer = ST_1.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         // recognize answer page
@@ -1131,36 +988,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
                     String str_id = String.valueOf(index);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_answer = ST_2.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_answer = ST_2.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         // recognize answer page
@@ -1192,36 +1039,26 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {"",""};
-                    boolean[] wait = {true,true};
                     String str_id = String.valueOf(index);
                     if (title_2.getText().toString().equals("讯飞")){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=False&answer=");
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[0] = getStringByStream(connection.getInputStream());
-                                    wait[0] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[0] = false;
-                                }
+                        HttpURLConnection connection = null;
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=False&answer=");
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[0]){
+                            result[0] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         if(result[0].equals("Done")){
                             title_2.setText("讯飞+");
@@ -1233,34 +1070,23 @@ public class FloatViewService extends AccessibilityService {
                             xun_fei_plus_choose_1.setVisibility(View.VISIBLE);
                             xun_fei_plus_2.setVisibility(View.VISIBLE);
                             xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
-
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    HttpURLConnection connection = null;
-                                    try {
-                                        URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
-                                        connection = (HttpURLConnection) url.openConnection();
-                                        connection.setConnectTimeout(3000);
-                                        connection.setReadTimeout(3000);
-                                        //设置请求方式 GET / POST 一定要大小
-                                        connection.setRequestMethod("GET");
-                                        connection.setDoInput(true);
-                                        connection.setDoOutput(false);
-                                        connection.connect();
-                                        int responseCode = connection.getResponseCode();
-                                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                                            throw new IOException("HTTP error code" + responseCode);
-                                        }
-                                        result[1] = getStringByStream(connection.getInputStream());
-                                        wait[1] = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        wait[1] = false;
-                                    }
+                            try {
+                                URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
+                                connection = (HttpURLConnection) url.openConnection();
+                                connection.setConnectTimeout(3000);
+                                connection.setReadTimeout(3000);
+                                //设置请求方式 GET / POST 一定要大小
+                                connection.setRequestMethod("GET");
+                                connection.setDoInput(true);
+                                connection.setDoOutput(false);
+                                connection.connect();
+                                int responseCode = connection.getResponseCode();
+                                if (responseCode != HttpURLConnection.HTTP_OK) {
+                                    throw new IOException("HTTP error code" + responseCode);
                                 }
-                            }).start();
-                            while(wait[1]){
+                                result[1] = getStringByStream(connection.getInputStream());
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                             String[] separated = result[1].split("&");
                             if(separated[0].equals("Done")){
@@ -1275,33 +1101,24 @@ public class FloatViewService extends AccessibilityService {
                             Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
                         }
                     } else if (title_2.getText().toString().equals("讯飞+")){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=False&answer=");
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[0] = getStringByStream(connection.getInputStream());
-                                    wait[0] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[0] = false;
-                                }
+                        HttpURLConnection connection = null;
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=False&answer=");
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[0]){
+                            result[0] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         if(result[0].equals("Done")){
                             title_2.setText("ST");
@@ -1313,34 +1130,23 @@ public class FloatViewService extends AccessibilityService {
                             ST_choose_1.setVisibility(View.VISIBLE);
                             ST_2.setVisibility(View.VISIBLE);
                             ST_choose_2.setVisibility(View.VISIBLE);
-
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    HttpURLConnection connection = null;
-                                    try {
-                                        URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
-                                        connection = (HttpURLConnection) url.openConnection();
-                                        connection.setConnectTimeout(3000);
-                                        connection.setReadTimeout(3000);
-                                        //设置请求方式 GET / POST 一定要大小
-                                        connection.setRequestMethod("GET");
-                                        connection.setDoInput(true);
-                                        connection.setDoOutput(false);
-                                        connection.connect();
-                                        int responseCode = connection.getResponseCode();
-                                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                                            throw new IOException("HTTP error code" + responseCode);
-                                        }
-                                        result[1] = getStringByStream(connection.getInputStream());
-                                        wait[1] = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        wait[1] = false;
-                                    }
+                            try {
+                                URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
+                                connection = (HttpURLConnection) url.openConnection();
+                                connection.setConnectTimeout(3000);
+                                connection.setReadTimeout(3000);
+                                //设置请求方式 GET / POST 一定要大小
+                                connection.setRequestMethod("GET");
+                                connection.setDoInput(true);
+                                connection.setDoOutput(false);
+                                connection.connect();
+                                int responseCode = connection.getResponseCode();
+                                if (responseCode != HttpURLConnection.HTTP_OK) {
+                                    throw new IOException("HTTP error code" + responseCode);
                                 }
-                            }).start();
-                            while(wait[1]){
+                                result[1] = getStringByStream(connection.getInputStream());
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                             String[] separated = result[1].split("&");
                             if(separated[0].equals("Done")){
@@ -1355,33 +1161,24 @@ public class FloatViewService extends AccessibilityService {
                             Toast.makeText(getApplicationContext(), "信息存储失败", Toast.LENGTH_SHORT).show();
                         }
                     } else if (title_2.getText().toString().equals("ST")){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                HttpURLConnection connection = null;
-                                try {
-                                    URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer=");
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    result[0] = getStringByStream(connection.getInputStream());
-                                    wait[0] = false;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    wait[0] = false;
-                                }
+                        HttpURLConnection connection = null;
+                        try {
+                            URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer=");
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setConnectTimeout(3000);
+                            connection.setReadTimeout(3000);
+                            //设置请求方式 GET / POST 一定要大小
+                            connection.setRequestMethod("GET");
+                            connection.setDoInput(true);
+                            connection.setDoOutput(false);
+                            connection.connect();
+                            int responseCode = connection.getResponseCode();
+                            if (responseCode != HttpURLConnection.HTTP_OK) {
+                                throw new IOException("HTTP error code" + responseCode);
                             }
-                        }).start();
-                        while(wait[0]){
+                            result[0] = getStringByStream(connection.getInputStream());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         if(result[0].equals("Done")){
                             // recognize answer page
@@ -1424,37 +1221,27 @@ public class FloatViewService extends AccessibilityService {
                 @Override
                 public void onClick(View view) {
                     String[] result = {""};
-                    boolean[] wait = {true};
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpURLConnection connection = null;
-                            try {
-                                String str_id = String.valueOf(index);
-                                String str_user = user_input.getText().toString();
-                                String str_job = job_input.getText().toString();
-                                URL url = new URL("http://47.96.100.217:8080/save_test_info?id="+str_id+"&user="+str_user+"&job="+str_job);
-                                connection = (HttpURLConnection) url.openConnection();
-                                connection.setConnectTimeout(3000);
-                                connection.setReadTimeout(3000);
-                                //设置请求方式 GET / POST 一定要大小
-                                connection.setRequestMethod("GET");
-                                connection.setDoInput(true);
-                                connection.setDoOutput(false);
-                                connection.connect();
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode != HttpURLConnection.HTTP_OK) {
-                                    throw new IOException("HTTP error code" + responseCode);
-                                }
-                                result[0] = getStringByStream(connection.getInputStream());
-                                wait[0] = false;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                wait[0] = false;
-                            }
+                    HttpURLConnection connection = null;
+                    try {
+                        String str_id = String.valueOf(index);
+                        String str_user = user_input.getText().toString();
+                        String str_job = job_input.getText().toString();
+                        URL url = new URL("http://47.96.100.217:8080/save_test_info?id="+str_id+"&user="+str_user+"&job="+str_job);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
                         }
-                    }).start();
-                    while(wait[0]){
+                        result[0] = getStringByStream(connection.getInputStream());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     if(result[0].equals("Done")){
                         //save page
