@@ -377,7 +377,7 @@ public class FloatViewService extends AccessibilityService {
                         if(!operation_state){
                             str_operation = "False";
                         }
-                        URL url = new URL("http://47.96.100.217:8080/set_basic_info?id="+str_id+"&operation="+str_operation);
+                        URL url = new URL("http://47.92.159.130:8080/set_basic_info?id="+str_id+"&operation="+str_operation);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -461,7 +461,7 @@ public class FloatViewService extends AccessibilityService {
                     try {
                         String str_id = String.valueOf(index);
                         String str_first_des = float_tv_result.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_first_des?id="+str_id+"&first_des="+str_first_des);
+                        URL url = new URL("http://47.92.159.130:8080/set_first_des?id="+str_id+"&first_des="+str_first_des);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -489,6 +489,7 @@ public class FloatViewService extends AccessibilityService {
                     } else if(result[0].equals("Again")){
                         if (send_1_first){
                             not_right_info.setVisibility(View.VISIBLE);
+                            send_1_first = false;
                         } else {
                             title_1.setText("ST");
                             float_tv_result.setText("识别到的内容");
@@ -513,7 +514,7 @@ public class FloatViewService extends AccessibilityService {
                     HttpURLConnection connection = null;
                     try {
                         String str_second_des = float_tv_result.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_second_des?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
+                        URL url = new URL("http://47.92.159.130:8080/set_second_des?id="+str_id+"&second_des="+str_second_des+"&app="+presentApp+"&component="+presentComponent);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -553,7 +554,7 @@ public class FloatViewService extends AccessibilityService {
                         send_1_first = true;
                         send_2_first = true;
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
+                            URL url = new URL("http://47.92.159.130:8080/get_xunfei_answer?id="+str_id);
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -582,6 +583,7 @@ public class FloatViewService extends AccessibilityService {
                     } else if (result[0].equals("Again")) {
                         if (send_2_first){
                             not_right_info.setVisibility(View.VISIBLE);
+                            send_2_first = false;
                         } else {
                             // recognize page
                             title_1.setVisibility(View.GONE);
@@ -605,7 +607,7 @@ public class FloatViewService extends AccessibilityService {
                             send_1_first = true;
                             send_2_first = true;
                             try {
-                                URL url = new URL("http://47.96.100.217:8080/get_xunfei_answer?id="+str_id);
+                                URL url = new URL("http://47.92.159.130:8080/get_xunfei_answer?id="+str_id);
                                 connection = (HttpURLConnection) url.openConnection();
                                 connection.setConnectTimeout(3000);
                                 connection.setReadTimeout(3000);
@@ -655,7 +657,7 @@ public class FloatViewService extends AccessibilityService {
                     HttpURLConnection connection = null;
                     try {
                         String str_answer = xun_fei_1.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        URL url = new URL("http://47.92.159.130:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -683,7 +685,7 @@ public class FloatViewService extends AccessibilityService {
                         xun_fei_plus_2.setVisibility(View.VISIBLE);
                         xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
+                            URL url = new URL("http://47.92.159.130:8080/get_xunfei_plus_answer?id="+str_id);
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -726,7 +728,7 @@ public class FloatViewService extends AccessibilityService {
                     HttpURLConnection connection = null;
                     try {
                         String str_answer = xun_fei_2.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        URL url = new URL("http://47.92.159.130:8080/set_xunfei_answer?id="+str_id+"&correct=True&answer="+str_answer);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -754,7 +756,7 @@ public class FloatViewService extends AccessibilityService {
                         xun_fei_plus_2.setVisibility(View.VISIBLE);
                         xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
+                            URL url = new URL("http://47.92.159.130:8080/get_xunfei_plus_answer?id="+str_id);
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -797,7 +799,7 @@ public class FloatViewService extends AccessibilityService {
                     HttpURLConnection connection = null;
                     try {
                         String str_answer = xun_fei_plus_1.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        URL url = new URL("http://47.92.159.130:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -825,7 +827,7 @@ public class FloatViewService extends AccessibilityService {
                         ST_2.setVisibility(View.VISIBLE);
                         ST_choose_2.setVisibility(View.VISIBLE);
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
+                            URL url = new URL("http://47.92.159.130:8080/get_ST_answer?id="+str_id);
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -868,7 +870,7 @@ public class FloatViewService extends AccessibilityService {
                     HttpURLConnection connection = null;
                     try {
                         String str_answer = xun_fei_plus_2.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        URL url = new URL("http://47.92.159.130:8080/set_xunfei_plus_answer?id="+str_id+"&correct=True&answer="+str_answer);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -896,7 +898,7 @@ public class FloatViewService extends AccessibilityService {
                         ST_2.setVisibility(View.VISIBLE);
                         ST_choose_2.setVisibility(View.VISIBLE);
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
+                            URL url = new URL("http://47.92.159.130:8080/get_ST_answer?id="+str_id);
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -939,7 +941,7 @@ public class FloatViewService extends AccessibilityService {
                     HttpURLConnection connection = null;
                     try {
                         String str_answer = ST_1.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        URL url = new URL("http://47.92.159.130:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -992,7 +994,7 @@ public class FloatViewService extends AccessibilityService {
                     HttpURLConnection connection = null;
                     try {
                         String str_answer = ST_2.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
+                        URL url = new URL("http://47.92.159.130:8080/set_ST_answer?id="+str_id+"&correct=True&answer="+str_answer);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);
@@ -1043,7 +1045,7 @@ public class FloatViewService extends AccessibilityService {
                     if (title_2.getText().toString().equals("讯飞")){
                         HttpURLConnection connection = null;
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/set_xunfei_answer?id="+str_id+"&correct=False&answer=");
+                            URL url = new URL("http://47.92.159.130:8080/set_xunfei_answer?id="+str_id+"&correct=False&answer=");
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -1071,7 +1073,7 @@ public class FloatViewService extends AccessibilityService {
                             xun_fei_plus_2.setVisibility(View.VISIBLE);
                             xun_fei_plus_choose_2.setVisibility(View.VISIBLE);
                             try {
-                                URL url = new URL("http://47.96.100.217:8080/get_xunfei_plus_answer?id="+str_id);
+                                URL url = new URL("http://47.92.159.130:8080/get_xunfei_plus_answer?id="+str_id);
                                 connection = (HttpURLConnection) url.openConnection();
                                 connection.setConnectTimeout(3000);
                                 connection.setReadTimeout(3000);
@@ -1103,7 +1105,7 @@ public class FloatViewService extends AccessibilityService {
                     } else if (title_2.getText().toString().equals("讯飞+")){
                         HttpURLConnection connection = null;
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/set_xunfei_plus_answer?id="+str_id+"&correct=False&answer=");
+                            URL url = new URL("http://47.92.159.130:8080/set_xunfei_plus_answer?id="+str_id+"&correct=False&answer=");
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -1131,7 +1133,7 @@ public class FloatViewService extends AccessibilityService {
                             ST_2.setVisibility(View.VISIBLE);
                             ST_choose_2.setVisibility(View.VISIBLE);
                             try {
-                                URL url = new URL("http://47.96.100.217:8080/get_ST_answer?id="+str_id);
+                                URL url = new URL("http://47.92.159.130:8080/get_ST_answer?id="+str_id);
                                 connection = (HttpURLConnection) url.openConnection();
                                 connection.setConnectTimeout(3000);
                                 connection.setReadTimeout(3000);
@@ -1163,7 +1165,7 @@ public class FloatViewService extends AccessibilityService {
                     } else if (title_2.getText().toString().equals("ST")){
                         HttpURLConnection connection = null;
                         try {
-                            URL url = new URL("http://47.96.100.217:8080/set_ST_answer?id="+str_id+"&correct=True&answer=");
+                            URL url = new URL("http://47.92.159.130:8080/set_ST_answer?id="+str_id+"&correct=False&answer=");
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setConnectTimeout(3000);
                             connection.setReadTimeout(3000);
@@ -1226,7 +1228,7 @@ public class FloatViewService extends AccessibilityService {
                         String str_id = String.valueOf(index);
                         String str_user = user_input.getText().toString();
                         String str_job = job_input.getText().toString();
-                        URL url = new URL("http://47.96.100.217:8080/save_test_info?id="+str_id+"&user="+str_user+"&job="+str_job);
+                        URL url = new URL("http://47.92.159.130:8080/save_test_info?id="+str_id+"&user="+str_user+"&job="+str_job);
                         connection = (HttpURLConnection) url.openConnection();
                         connection.setConnectTimeout(3000);
                         connection.setReadTimeout(3000);

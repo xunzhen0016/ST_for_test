@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 HttpURLConnection connection = null;
                 try {
-                    URL url = new URL("http://47.96.100.217:8080/save_test_info");
+                    URL url = new URL("http://47.92.159.130:8080/save_test_info");
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setConnectTimeout(3000);
                     connection.setReadTimeout(3000);
